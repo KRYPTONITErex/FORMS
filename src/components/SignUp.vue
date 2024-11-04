@@ -1,19 +1,27 @@
 <template>
   <p>Sign Up Form</p>
 
-  <form>
+  <form @submit.prevent="submit">
     <p>Hi this is updated?</p>
-    <p>why nochanges</p>
     <label for="">Email</label>
     <input type="email" required v-model="email">
     <label for="">password</label>
     <input type="password" required v-model="password" >
+    <p class="errmsg" v-if="errorMsg">{{ errorMsg }}</p>
 
-    <label for="">User Role_</label>
-    <select v-model="roles">
+    <label for="">User Role</label>
+    <select v-model="role">
       <option value="developer">Web Developer</option>
       <option value="designer">Web Designer</option>
     </select>
+
+    <div>
+      <label for="">Skills</label>
+      <input type="text" @keyup="addSkill" v-model="skill">
+    </div>
+    <div v-for="skill in skills" :key="skill" class="skill-item">
+    <p>{{ skill }}</p><span class="cross" @click="deleteSkill(skill)"><p>&#x2716;</p></span>
+    </div>
 
     <div>
       <input type="checkbox" v-model="accept">
@@ -34,6 +42,8 @@
       <label for="">Warain Soe</label><br>
     </div>
 
+    <div class="align"><button class="create">Create Account</button></div>
+
   </form>
   <p>Email - {{ email }}</p>
   <p>Password - {{ password }}</p>
@@ -52,7 +62,30 @@ export default {
       password:"",
       role:"designer",
       accept:true,
-      names:[]
+      names:[],
+      skills:[],
+      skill:"",
+      errorMsg:""
+    }
+  },
+  methods: {
+    addSkill(e){
+      if(e.key==="," && this.skill){
+        this.skills.push(this.skill);
+        this.skill=""
+      }
+    },
+    deleteSkill(skill){
+      this.skills=this.skills.filter(loopskill=>{
+        // console.log(skill);
+        return loopskill!=skill;
+      })
+    },
+    submit(){
+    // console.log("sunmitted")
+      if(this.password.length<8){
+        this.errorMsg="PASSWORD must be at least 8 characters"
+      }
     }
   }
 
@@ -93,6 +126,32 @@ export default {
       margin: 0 8px 0 0;
       position: relative;
       top: 2px;
+    }
+    .skill-item { 
+      display: flex; 
+      align-items: center; 
+      gap: 8px; 
+    }
+    .cross { 
+      cursor: pointer; 
+      color: red; 
+    }
+    .create{
+      background-color: royalblue;
+      padding: 8px;
+      color: white;
+      border-radius: 10px;
+      border: 1px rgba(251, 251, 66, 0.821) solid;
+      box-shadow: #555 3px 3px 3px;
+    }
+    .align{
+      text-align: center;
+    }
+    .errmsg{
+      background-color: crimson;
+      color: rgb(255, 253, 253);
+      border-radius: 5px;
+      text-align: center;
     }
 
 </style>

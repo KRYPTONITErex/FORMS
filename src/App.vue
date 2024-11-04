@@ -1,7 +1,6 @@
 <template>
   <p>HELLO THERE</p>
   <sign-up></sign-up>
-  <p>HI ANYONE??</p>
 
 </template>
 
